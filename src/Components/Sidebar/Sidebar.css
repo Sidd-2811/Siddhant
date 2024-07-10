@@ -35,3 +35,16 @@ margin-right: 20px;
     width: 25px;
     margin-right: 20px;
 }
+.small-sidebar{
+    width: 5%;
+}
+.small-sidebar p{
+    display: none;
+}
+.small-sidebar h3{
+display: none;
+}
+.small-sidebar hr{
+    width: 50%;
+    margin-bottom: 25px;
+} 
