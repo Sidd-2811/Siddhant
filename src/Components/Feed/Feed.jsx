@@ -19,20 +19,23 @@ const[data,setdata] = useState([]);
     const fetchData = async()=>{
         const videoList_url = `https://youtube.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&maxResults=50&regionCode=Us&videoCategoryId=${category}&key=${API_KEY}`;
         await fetch(videoList_url).then(response=>response.json())
-        .then(data=>setdata(data.items))
+        .then((data)=>setdata(data.items))
+        console.log(data)
     }
     // use useEffect when the func is loaded then it run useEffect once
     useEffect(()=>{
         fetchData();
     },[category])
   return (
-
+        <>
      <div className="feed">
         {/* add data api in the fed to show dynamic feed */}
          {/* eslint-disable-next-line no-unused-vars */}
         {data.map((item,index)=>{
         return( 
-        <Link to={`video/${item.snippet.categoryId}/${item.snippet.id}`} className="card">
+        <Link
+         key={index}
+         to={`video/${item.snippet.categoryId}/${item.id}`} className="card">
             <img src={item.snippet.thumbnails.medium.url} alt="" />
             <h2>{item.snippet.title}</h2>
             <h3>{item.snippet.channelTitle}</h3>
@@ -43,5 +46,6 @@ const[data,setdata] = useState([]);
     }
         )}
       </div>
+      </>
   )
 }

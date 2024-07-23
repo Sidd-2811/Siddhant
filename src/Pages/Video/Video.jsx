@@ -1,15 +1,17 @@
-/* eslint-disable no-unused-vars */
-import React from 'react'
-import "./Video.css"
-import PlayVideo from '../../Components/PlayVideo/PlayVideo'
-import Recommended from '../../Components/Recommended/Recommended'
+import { useParams } from 'react-router-dom';
+import PlayVideo from '../../Components/PlayVideo/PlayVideo';
+import Recommended from '../../Components/Recommended/Recommended';
+import './Video.css';
 
 const Video = () => {
+  const{videoId,categoryId}=useParams();
   return (
-    <div className='play-container'>
-      <PlayVideo/>
-      <Recommended/>
-    </div>
+    <>
+      <div className="play-container">
+        <PlayVideo videoId={videoId} />
+        <Recommended />
+      </div>
+    </>
   )
 }
 
