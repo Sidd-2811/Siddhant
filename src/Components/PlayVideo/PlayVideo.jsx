@@ -15,6 +15,8 @@ const PlayVideo = ({videoId}) => {
     const[apiData,setApiData] = useState(null);
     // for channel subscribers and logo 
     const[channelData,setChannelData] = useState(null);
+    // for comments
+    const[commentData, setCommentData] = useState([]);
 
     const fetchVideoData = async ()=>{
         // fetching videos data
@@ -34,6 +36,13 @@ const PlayVideo = ({videoId}) => {
         await fetch(channelDataUrl).
         then(res=>res.json()).
         then(data => setChannelData(data.items[0]))
+        // fetching comment data
+        const commentUrl = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet%2Creplies&maxResults=1000&videoId=${videoId}&key=${API_KEY}`
+
+         await fetch(commentUrl).
+         then(res=>res.json()).
+         then(data=>setCommentData(data.items))
+
     }
     useEffect(()=>{
 fetchOtherData();
@@ -77,56 +86,28 @@ fetchOtherData();
             <p>{apiData?apiData.snippet.description.slice(0,250):"Description here"}</p>
             <hr />
             <h4>{apiData?value_converter(apiData.statistics.commentCount):"20"} Comments</h4>
+
             {/* 3 */}
-            <div className="comment">
-                <img src={user_profile} alt="" />
+            {commentData.map((item,index)=>{
+                return (
+                    <div key={index} className="comment">
+                <img src={item.snippet.topLevelComment.snippet.authorProfileImageUrl} alt="" />
                 <div>
-                    <h3>Anurag Shastri <span>1 day ago</span></h3>
-                    <p>Your videos are so informative</p>
+                    <h3>{item.snippet.topLevelComment.snippet.authorDisplayName} <span>1 day ago</span></h3>
+                    <p>{item.snippet.topLevelComment.snippet.textDisplay}</p>
                     
                     <div className="comment-action">
-                        <img src={like} alt="" /> <span>244</span>
+                        <img src={like} alt="" /> <span>{value_converter(item.snippet.topLevelComment.snippet.likeCount)}</span>
                         <img src={dislike} alt="" /> <span>4</span>
                     </div>
                 </div>
             </div>
-            {/* 4 */}
-            <div className="comment">
-                <img src={user_profile} alt="" />
-                <div>
-                    <h3>Anurag Shastri <span>1 day ago</span></h3>
-                    <p>Your videos are so informative</p>
-                    
-                    <div className="comment-action">
-                        <img src={like} alt="" /> <span>244</span>
-                        <img src={dislike} alt="" /> <span>4</span>
-                    </div>
-                </div>
-            </div>
-            <div className="comment">
-                <img src={user_profile} alt="" />
-                <div>
-                    <h3>Anurag Shastri <span>1 day ago</span></h3>
-                    <p>Your videos are so informative</p>
-                    
-                    <div className="comment-action">
-                        <img src={like} alt="" /> <span>244</span>
-                        <img src={dislike} alt="" /> <span>4</span>
-                    </div>
-                </div>
-            </div>
-            <div className="comment">
-                <img src={user_profile} alt="" />
-                <div>
-                    <h3>Anurag Shastri <span>1 day ago</span></h3>
-                    <p>Your videos are so informative</p>
-                    
-                    <div className="comment-action">
-                        <img src={like} alt="" /> <span>244</span>
-                        <img src={dislike} alt="" /> <span>4</span>
-                    </div>
-                </div>
-            </div>
+                )
+            })}
+            
+            
+           
+           
        </div>
 
     </div>
