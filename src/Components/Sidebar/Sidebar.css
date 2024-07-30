@@ -52,3 +52,8 @@ display: none;
     padding-bottom: 2px;
     border-bottom: 3px solid rgb(0, 174, 255);
 }
+@media (max-width : 900px){
+    .sidebar{
+        display: none;
+    }
+}

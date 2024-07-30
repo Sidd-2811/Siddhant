@@ -9,8 +9,10 @@ import user_profile from "../../assets/user_profile.jpg";
 import { useEffect, useState } from 'react';
 import { API_KEY, value_converter } from '../../data';
 import moment from 'moment'
+import { useParams } from 'react-router-dom';
 
-const PlayVideo = ({videoId}) => {
+const PlayVideo = () => {
+    const {videoId} = useParams()
     // to change the playvideo real time views
     const[apiData,setApiData] = useState(null);
     // for channel subscribers and logo 
@@ -26,11 +28,7 @@ const PlayVideo = ({videoId}) => {
         then(data => setApiData(data.items[0]))
         // console.log(data.items[0]);
     }
-    // fetching video data on page load
-    useEffect(()=>{
-        fetchVideoData();
-    },[])
-
+    
     const fetchOtherData = async()=>{
         const channelDataUrl = `https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=${apiData.snippet.channelId}&key=${API_KEY}`;
         await fetch(channelDataUrl).
@@ -38,15 +36,20 @@ const PlayVideo = ({videoId}) => {
         then(data => setChannelData(data.items[0]))
         // fetching comment data
         const commentUrl = `https://youtube.googleapis.com/youtube/v3/commentThreads?part=snippet%2Creplies&maxResults=1000&videoId=${videoId}&key=${API_KEY}`
-
-         await fetch(commentUrl).
+        
+        await fetch(commentUrl).
          then(res=>res.json()).
          then(data=>setCommentData(data.items))
+         
+        }
+        // fetching video data on page load
+        useEffect(()=>{
+            fetchVideoData();
+        },[videoId])
 
-    }
-    useEffect(()=>{
-fetchOtherData();
-    },[apiData])
+         useEffect(()=>{
+             fetchOtherData();
+         },[apiData])
 
   return (
     <div className='play-video'>
