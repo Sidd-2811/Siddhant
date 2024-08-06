@@ -9,10 +9,10 @@ const Video = () => {
     <>
       <div className="play-container">
         <PlayVideo videoId={videoId} />
-        <Recommended categoryId={categoryId} />
+        <Recommended categoryId={categoryId}/>
       </div>
     </>
   )
 }
 
-export default Video
+export default Video;
